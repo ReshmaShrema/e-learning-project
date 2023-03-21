@@ -3,9 +3,13 @@ const cors= require('cors');
 const morgan = require('morgan');
 require('dotenv').config();
 const { readdirSync } = require('fs');
+const mongoose = require('mongoose');
 
 //create express app
 const app = express();
+
+//db
+mongoose.connect(process.env.DATABASE,{}).then(()=>console.log('DB CONNECTED')).catch((err)=>console.log('DB ERROR=>',err))
 
 //apply middleware
 app.use(cors());
@@ -16,6 +20,8 @@ app.use(morgan('dev'));
 readdirSync("./routes").map((r)=>
     app.use("/api",require(`./routes/${r}`))
 );
+
+
 
 //port 
 const port = process.env.PORT || 8000;
